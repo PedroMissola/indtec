@@ -1,0 +1,88 @@
+name: 🚀 CI/CD - Build & Deploy
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  build-and-test:
+    name: 📦 Build and Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout do código
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup do PNPM
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: 🟢 Setup do Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+
+      - name: 📦 Instalar dependências
+        run: pnpm install --frozen-lockfile
+
+      - name: 🔍 Rodar Linter (Opcional)
+        run: pnpm run lint || true
+
+      - name: 🏗️ Construir a aplicação
+        run: pnpm run build
+        env:
+          # Se você utiliza variáveis de ambiente que afetam o build (ex: NEXT_PUBLIC_*), coloque-as aqui
+          # ou configure via GitHub Secrets.
+          NEXT_PUBLIC_ANALYTICS_ID: ${{ secrets.NEXT_PUBLIC_ANALYTICS_ID }}
+
+      - name: 📤 Fazer upload do build como artefato
+        uses: actions/upload-artifact@v4
+        with:
+          name: next-build-output
+          path: |
+            .next
+            public
+            package.json
+            pnpm-lock.yaml
+          retention-days: 7
+
+  deploy-vercel:
+    name: 🌍 Deploy para Vercel
+    needs: build-and-test # Espera o build passar para fazer deploy
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout do código
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup do PNPM
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: 🟢 Setup do Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+
+      - name: 📦 Instalar dependências
+        run: pnpm install --frozen-lockfile
+
+      - name: 🏗️ Build para produção
+        run: pnpm run build
+        env:
+          NEXT_PUBLIC_ANALYTICS_ID: ${{ secrets.NEXT_PUBLIC_ANALYTICS_ID }}
+
+      - name: 🔗 Deploy na Vercel
+        uses: vercel/action@v6
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          vercel-args: '--prod' # Remove esta linha se quiser deploy em Preview (ambiente de teste)
