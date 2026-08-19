@@ -18,7 +18,7 @@ jobs:
       - name: 🟢 Setup do PNPM
         uses: pnpm/action-setup@v4
         with:
-          version: 10.26.0   # mesma versão do package.json
+          version: 10.26.0
 
       - name: 🟢 Setup do Node.js
         uses: actions/setup-node@v4
@@ -61,7 +61,7 @@ jobs:
       - name: 🟢 Setup do PNPM
         uses: pnpm/action-setup@v4
         with:
-          version: 10.26.0   # alinhado com a job de build
+          version: 10.26.0
 
       - name: 🟢 Setup do Node.js
         uses: actions/setup-node@v4
@@ -77,10 +77,11 @@ jobs:
         env:
           NEXT_PUBLIC_ANALYTICS_ID: ${{ secrets.NEXT_PUBLIC_ANALYTICS_ID }}
 
+      # 🔽 NOVO: Instala a Vercel CLI mais recente e faz o deploy
       - name: 🔗 Deploy na Vercel
-        uses: amondnet/vercel-action@v25
-        with:
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-          vercel-args: '--prod'
+        run: |
+          npm install -g vercel@latest
+          vercel deploy --prod --token=${{ secrets.VERCEL_TOKEN }} --yes
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
