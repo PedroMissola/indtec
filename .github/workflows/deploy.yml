@@ -18,7 +18,7 @@ jobs:
       - name: 🟢 Setup do PNPM
         uses: pnpm/action-setup@v4
         with:
-          version: 10.26.0
+          version: 10.26.0   # mesma versão do package.json
 
       - name: 🟢 Setup do Node.js
         uses: actions/setup-node@v4
@@ -35,8 +35,6 @@ jobs:
       - name: 🏗️ Construir a aplicação
         run: pnpm run build
         env:
-          # Se você utiliza variáveis de ambiente que afetam o build (ex: NEXT_PUBLIC_*), coloque-as aqui
-          # ou configure via GitHub Secrets.
           NEXT_PUBLIC_ANALYTICS_ID: ${{ secrets.NEXT_PUBLIC_ANALYTICS_ID }}
 
       - name: 📤 Fazer upload do build como artefato
@@ -52,7 +50,7 @@ jobs:
 
   deploy-vercel:
     name: 🌍 Deploy para Vercel
-    needs: build-and-test # Espera o build passar para fazer deploy
+    needs: build-and-test
     if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
     runs-on: ubuntu-latest
 
@@ -63,12 +61,12 @@ jobs:
       - name: 🟢 Setup do PNPM
         uses: pnpm/action-setup@v4
         with:
-          version: 9
+          version: 10.26.0   # alinhado com a job de build
 
       - name: 🟢 Setup do Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: 'pnpm'
 
       - name: 📦 Instalar dependências
@@ -80,9 +78,9 @@ jobs:
           NEXT_PUBLIC_ANALYTICS_ID: ${{ secrets.NEXT_PUBLIC_ANALYTICS_ID }}
 
       - name: 🔗 Deploy na Vercel
-        uses: vercel/action@v6
+        uses: amondnet/vercel-action@v25
         with:
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
           vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
           vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-          vercel-args: '--prod' # Remove esta linha se quiser deploy em Preview (ambiente de teste)
+          vercel-args: '--prod'
