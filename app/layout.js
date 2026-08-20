@@ -1,6 +1,5 @@
 import { Inter } from "next/font/google";
 import { GoogleAnalytics } from '@next/third-parties/google';
-import { FacebookPixel } from '@next/third-parties/facebook';
 import Script from "next/script";
 import "./globals.css";
 
@@ -140,23 +139,13 @@ export default function RootLayout({ children }) {
                 reviewCount: "83"
               },
               sameAs: [
-                "https://www.instagram.com/indtec_oficial/", // Substitua pelo link real
-                "https://www.facebook.com/indtecassistenciatecnica/", // Substitua pelo link real
-                "https://g.page/ind-tec-assistencia-tecnica" // Substitua pelo link do Google Business Profile
+                "https://www.instagram.com/indtec_oficial/", 
+                "https://www.facebook.com/indtecassistenciatecnica/", 
+                "https://g.page/ind-tec-assistencia-tecnica" 
               ]
             }),
           }}
         />
-        
-        <noscript>
-          <img
-            height="1"
-            width="1"
-            style={{ display: "none" }}
-            src={`https://www.facebook.com/tr?id=${process.env.NEXT_PUBLIC_FB_PIXEL_ID}&ev=PageView&noscript=1`}
-            alt="Meta Pixel"
-          />
-        </noscript>
       </head>
       
       <body className="bg-brand-black text-brand-light font-sans min-h-screen flex flex-col">
@@ -164,12 +153,6 @@ export default function RootLayout({ children }) {
 
         {process.env.NEXT_PUBLIC_GA_ID && (
           <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />
-        )}
-
-        {process.env.NEXT_PUBLIC_FB_PIXEL_ID && (
-          <FacebookPixel
-            pixelId={process.env.NEXT_PUBLIC_FB_PIXEL_ID}
-          />
         )}
       </body>
     </html>
