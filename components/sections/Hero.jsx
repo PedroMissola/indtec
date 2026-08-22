@@ -4,7 +4,6 @@ import { Button } from '@/components/ui/button';
 import { COMPANY_INFO, WHATSAPP_NUMBER, WHATSAPP_DEFAULT_MSG } from '@/data/mockData';
 
 export default function Hero() {
-  // Direcionamento direto para o WhatsApp conforme o escopo
   const handleWhatsApp = () => {
     const encoded = encodeURIComponent(WHATSAPP_DEFAULT_MSG);
     window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encoded}`, '_blank', 'noopener,noreferrer');

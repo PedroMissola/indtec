@@ -5,8 +5,8 @@ export default function manifest() {
     description: 'Assistência técnica especializada em Campinas/SP',
     start_url: '/',
     display: 'standalone',
-    background_color: '#0a0a0a',
-    theme_color: '#0a0a0a',
+    background_color: '#09090b',
+    theme_color: '#09090b',
     icons: [
       {
         src: '/icon-192.png',
