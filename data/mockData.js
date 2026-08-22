@@ -179,3 +179,9 @@ export const TEAM_MEMBERS = [
     },
   },
 ];
+
+export const LAB_GALLERY_IMAGES = [
+  '/imagens-laboratorio/foto-1.jpg',
+  '/imagens-laboratorio/foto-2.jpg',
+  '/imagens-laboratorio/foto-3.jpg',
+];
