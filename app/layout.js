@@ -1,6 +1,7 @@
 import { Inter } from "next/font/google";
 import { GoogleAnalytics } from '@next/third-parties/google';
 import Script from "next/script";
+import { ThemeProvider } from "@/components/ThemeProvider";
 import "./globals.css";
 
 const inter = Inter({
@@ -15,8 +16,8 @@ export const viewport = {
   maximumScale: 5,
   userScalable: true,
   themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#ffffff' },
-    { media: '(prefers-color-scheme: dark)', color: '#0a0a0a' },
+    { media: '(prefers-color-scheme: light)', color: '#fcfcfc' },
+    { media: '(prefers-color-scheme: dark)', color: '#000000' },
   ],
 };
 
@@ -36,7 +37,7 @@ export async function generateMetadata() {
       "IND TEC", "Jardim dos Oliveiras"
     ],
     authors: [{ name: "IND TEC Assistência Técnica" }],
-    creator: "Pedro",
+    creator: "IND TEC",
     applicationName: "IND TEC Website",
     generator: "Next.js",
     referrer: "origin-when-cross-origin",
@@ -84,6 +85,7 @@ export default function RootLayout({ children }) {
     <html
       lang="pt-BR"
       className={`${inter.variable} scroll-smooth antialiased`}
+      suppressHydrationWarning
     >
       <head>
         <Script
@@ -148,8 +150,16 @@ export default function RootLayout({ children }) {
         />
       </head>
       
-      <body className="bg-brand-black text-brand-light font-sans min-h-screen flex flex-col">
-        {children}
+      <body className="bg-background text-foreground font-sans min-h-screen flex flex-col">
+        
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="dark"
+          enableSystem
+          disableTransitionOnChange
+        >
+          {children}
+        </ThemeProvider>
 
         {process.env.NEXT_PUBLIC_GA_ID && (
           <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />

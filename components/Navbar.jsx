@@ -1,8 +1,36 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { Menu, X, MessageSquare } from 'lucide-react';
+import { useTheme } from 'next-themes';
+import { Menu, X, MessageSquare, Sun, Moon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { COMPANY_INFO, WHATSAPP_NUMBER } from '@/data/mockData';
+
+function ThemeToggle() {
+  const { setTheme, resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return <div className="w-9 h-9" aria-hidden="true" />; // Espaço vazio enquanto carrega
+
+  const isDark = resolvedTheme === 'dark';
+
+  return (
+    <button
+      onClick={() => setTheme(isDark ? 'light' : 'dark')}
+      aria-label={isDark ? "Mudar para modo claro" : "Mudar para modo escuro"}
+      className="p-2 text-muted-foreground hover:text-foreground bg-secondary/50 hover:bg-secondary transition-colors focus:outline-none focus:ring-2 focus:ring-primary rounded-lg flex items-center justify-center w-9 h-9"
+    >
+      {isDark ? (
+        <Sun className="w-5 h-5 text-primary" aria-hidden="true" />
+      ) : (
+        <Moon className="w-5 h-5 text-primary" aria-hidden="true" />
+      )}
+    </button>
+  );
+}
 
 export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -72,6 +100,8 @@ export function Navbar() {
         </div>
 
         <div className="hidden md:flex items-center gap-3">
+          <ThemeToggle />
+          
           <Button
             variant="default"
             className="rounded-full font-bold px-6 focus:outline-none focus:ring-4 focus:ring-primary/50 focus:ring-offset-2 focus:ring-offset-background"
@@ -82,15 +112,17 @@ export function Navbar() {
           </Button>
         </div>
 
-        <div className="flex items-center md:hidden">
+        <div className="flex items-center gap-2 md:hidden">
+          <ThemeToggle />
+          
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-expanded={mobileMenuOpen}
             aria-controls="menu-mobile"
             aria-label={mobileMenuOpen ? "Fechar Menu" : "Abrir Menu"}
-            className="p-2 text-muted-foreground hover:text-foreground transition-colors focus:outline-none focus:ring-2 focus:ring-primary rounded-lg"
+            className="p-2 text-muted-foreground hover:text-foreground bg-secondary/50 hover:bg-secondary transition-colors focus:outline-none focus:ring-2 focus:ring-primary rounded-lg flex items-center justify-center w-9 h-9"
           >
-            {mobileMenuOpen ? <X className="w-6 h-6" aria-hidden="true" /> : <Menu className="w-6 h-6" aria-hidden="true" />}
+            {mobileMenuOpen ? <X className="w-5 h-5" aria-hidden="true" /> : <Menu className="w-5 h-5" aria-hidden="true" />}
           </button>
         </div>
       </div>

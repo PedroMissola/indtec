@@ -1,7 +1,7 @@
 export const WHATSAPP_NUMBER = '5519953243237';
 export const WHATSAPP_DEFAULT_MSG = 'Olá IND TEC! Quero solicitar um orçamento.';
 
-// Novas constantes de mídia
+// Constantes de mídia
 export const LAB_IMAGE_URL = 'https://placehold.co/1200x675';
 export const LAB_VIDEO_URL = 'https://www.w3schools.com/html/mov_bbb.mp4';
 
@@ -13,8 +13,13 @@ export const COMPANY_INFO = {
   phone: '(19) 95324-3237',
   hoursWeekday: 'Segunda a sexta das 09h às 18h',
   hoursSaturday: 'Sábado das 09h às 13h',
-  googleRating: '5,0',
-  googleReviewCount: 83
+  
+  // TODO: INTEGRAÇÃO API GOOGLE MEU NEGÓCIO
+  // Estes valores são estáticos para o protótipo. 
+  // No futuro, crie uma Server Action no Next.js chamando a Google Places API:
+  // GET https://maps.googleapis.com/maps/api/place/details/json?place_id=SEU_PLACE_ID&fields=rating,user_ratings_total&key=SUA_API_KEY
+  googleRating: '5,0', // Virá de data.result.rating
+  googleReviewCount: 83 // Virá de data.result.user_ratings_total
 };
 
 export const SERVICES_DATA = [
@@ -96,19 +101,13 @@ export const FAQ_DATA = [
   }
 ];
 
-export const IMAGE = [
-  {
-    ID: 'img-1'
-  }
-];
-
 export const TEAM_MEMBERS = [
   {
     id: '1',
     name: 'Carlos Eduardo',
     role: 'Técnico Especialista em Microeletrônica',
     bio: 'Especialista em reparo de placas de celulares e notebooks, com certificação em solda BGA e diagnóstico avançado.',
-    photoUrl: null, // ou URL da foto
+    photoUrl: null, 
     specialties: ['Solda BGA', 'Diagnóstico de placas', 'Reparo de celulares'],
     experience: '10+ anos de experiência',
     socials: {
@@ -146,36 +145,6 @@ export const TEAM_MEMBERS = [
       instagram: 'https://instagram.com/rafaelsantos',
       twitter: '',
       github: 'https://github.com/rafaelsantos',
-    },
-  },
-  {
-    id: '4',
-    name: 'Juliana Ferreira',
-    role: 'Especialista em Seminovos e Qualidade',
-    bio: 'Responsável pela avaliação e garantia de aparelhos seminovos, assegurando procedência e funcionamento.',
-    photoUrl: null,
-    specialties: ['Avaliação técnica', 'Controle de qualidade', 'Garantia estendida'],
-    experience: '6 anos de experiência',
-    socials: {
-      linkedin: 'https://linkedin.com/in/julianaferreira',
-      instagram: 'https://instagram.com/julianaferreira',
-      twitter: '',
-      github: '',
-    },
-  },
-  {
-    id: '5',
-    name: 'Bruno Oliveira',
-    role: 'Técnico em Celulares e Tablets',
-    bio: 'Especialista em troca de telas, baterias e conectores, com atendimento rápido e foco na satisfação do cliente.',
-    photoUrl: null,
-    specialties: ['Troca de telas', 'Baterias', 'Conectores de carga'],
-    experience: '5 anos de experiência',
-    socials: {
-      linkedin: 'https://linkedin.com/in/brunooliveira',
-      instagram: 'https://instagram.com/brunooliveira',
-      twitter: '',
-      github: '',
     },
   },
 ];
