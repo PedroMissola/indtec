@@ -5,25 +5,24 @@ import { Button } from '@/components/ui/button';
 import { SERVICES_DATA, WHATSAPP_NUMBER } from '@/data/mockData';
 
 export function Servicos() {
-  // Função para mapear o ícone do mockData para o Lucide
   const getIcon = (iconName) => {
+    const props = { className: "w-7 h-7 text-primary", "aria-hidden": "true" };
     switch (iconName) {
       case 'smartphone':
-        return <Smartphone className="w-7 h-7 text-primary" />;
+        return <Smartphone {...props} />;
       case 'laptop':
-        return <Laptop className="w-7 h-7 text-primary" />;
+        return <Laptop {...props} />;
       case 'monitor':
-        return <Monitor className="w-7 h-7 text-primary" />;
+        return <Monitor {...props} />;
       case 'gamepad-2':
-        return <Gamepad2 className="w-7 h-7 text-primary" />;
+        return <Gamepad2 {...props} />;
       case 'sparkles':
-        return <Sparkles className="w-7 h-7 text-primary" />;
+        return <Sparkles {...props} />;
       default:
-        return <Smartphone className="w-7 h-7 text-primary" />;
+        return <Smartphone {...props} />;
     }
   };
 
-  // Função para redirecionar ao WhatsApp com mensagem personalizada
   const handleWhatsApp = (serviceTitle) => {
     const text = `Olá IND TEC! Quero solicitar um orçamento para ${serviceTitle}.`;
     const encoded = encodeURIComponent(text);
@@ -31,12 +30,15 @@ export function Servicos() {
   };
 
   return (
-    <section id="servicos" className="w-full max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-16 py-16 md:py-24">
-      {/* Cabeçalho da Seção */}
+    <section 
+      id="servicos" 
+      className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-16 py-16 md:py-24"
+      aria-labelledby="servicos-title"
+    >
       <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
         <div>
           <span className="text-xs font-bold uppercase tracking-widest text-primary">Soluções Completas</span>
-          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-foreground mt-1">
+          <h2 id="servicos-title" className="text-3xl sm:text-4xl font-bold tracking-tight text-foreground mt-1">
             Especialidades e Serviços
           </h2>
         </div>
@@ -45,41 +47,41 @@ export function Servicos() {
         </p>
       </div>
 
-      {/* Grid Assimétrico: 2 em cima (span 3 cada) e 3 embaixo (span 2, 2 e 2 totalizando 6 colunas) */}
-      <div className="grid grid-cols-1 md:grid-cols-6 gap-6">
+      <ul className="grid grid-cols-1 md:grid-cols-6 gap-6">
         {SERVICES_DATA.map((service, index) => {
-          // Os dois primeiros cards ocupam metade da largura cada (md:col-span-3) -> 2 em cima
-          // Os três seguintes ocupam um terço cada (md:col-span-2) -> 3 embaixo com tamanhos iguais
           const spanClass = index < 2 ? "md:col-span-3" : "md:col-span-2";
 
           return (
-            <Card key={service.id} className={`flex flex-col h-full group justify-between ${spanClass}`}>
-              <CardHeader>
-                <div className="w-14 h-14 rounded-2xl bg-secondary border border-border flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
-                  {getIcon(service.icon)}
-                </div>
-                <CardTitle className="group-hover:text-primary transition-colors text-xl">
-                  {service.title}
-                </CardTitle>
-                <CardDescription className="text-sm mt-2 leading-relaxed text-muted-foreground">
-                  {service.description}
-                </CardDescription>
-              </CardHeader>
-              
-              <CardContent className="pt-4">
-                <Button
-                  variant="outline"
-                  className="w-full font-bold group-hover:bg-primary group-hover:text-primary-foreground group-hover:border-primary transition-all"
-                  onClick={() => handleWhatsApp(service.title)}
-                >
-                  Fazer Orçamento
-                  <ArrowRight className="w-4 h-4 ml-2 opacity-70 group-hover:opacity-100" />
-                </Button>
-              </CardContent>
-            </Card>
+            <li key={service.id} className={spanClass}>
+              <Card className="flex flex-col h-full group justify-between">
+                <CardHeader>
+                  <div className="w-14 h-14 rounded-2xl bg-secondary border border-border flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+                    {getIcon(service.icon)}
+                  </div>
+                  <CardTitle className="group-hover:text-primary transition-colors text-xl">
+                    {service.title}
+                  </CardTitle>
+                  <CardDescription className="text-sm mt-2 leading-relaxed text-muted-foreground">
+                    {service.description}
+                  </CardDescription>
+                </CardHeader>
+                
+                <CardContent className="pt-4">
+                  <Button
+                    variant="outline"
+                    className="w-full font-bold group-hover:bg-primary group-hover:text-primary-foreground group-hover:border-primary transition-all focus:outline-none focus:ring-4 focus:ring-primary/50"
+                    onClick={() => handleWhatsApp(service.title)}
+                    aria-label={`Fazer Orçamento para ${service.title}`}
+                  >
+                    Fazer Orçamento
+                    <ArrowRight className="w-4 h-4 ml-2 opacity-70 group-hover:opacity-100" aria-hidden="true" />
+                  </Button>
+                </CardContent>
+              </Card>
+            </li>
           );
         })}
-      </div>
+      </ul>
     </section>
   );
 }
